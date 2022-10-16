@@ -1,0 +1,33 @@
+version: "3"
+
+# here we list our containers
+services:
+
+  api:
+    # target: dev
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+    volumes:
+      - .:/app:ro
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      DB_IP: postgres-db
+      DB_USER: cesar
+      DB_PASS: cesar
+      DB_NAME: larnuDB
+      DB_PORT: 5432
+    command: npm run dev:start
+    # we want to pass different commands at runtime.
+
+  postgres-db:
+    environment:
+      # this env variables are required for mongodb
+      POSTGRES_USER: cesar
+      POSTGRES_PASSWORD: cesar
+    volumes:
+      # we persist any data inside the container into our localComputer
+      # if we delete the container we can bring our data back again
+      - postgres-db:/data/db
